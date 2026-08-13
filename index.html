@@ -65,6 +65,16 @@
             box-shadow: none;
         }
 
+        button.back-btn {
+            background-color: transparent;
+            color: #ff4d6d;
+            border: 2px solid #ff4d6d;
+            box-shadow: none;
+            padding: 8px 18px;
+            font-size: 14px;
+            margin-top: 15px;
+        }
+
         /* Champs ultra visibles */
         input[type="datetime-local"], input[type="time"] {
             padding: 15px;
@@ -139,7 +149,7 @@
         <div id="step-1" class="step">
             <h1>Mon ange, tu voudrais venir manger avec moi ? 🥺</h1>
             <div class="btn-container">
-                <button onclick="nextStep(2)">Oui 💖</button>
+                <button onclick="goToStep(2)">Oui 💖</button>
                 <button class="secondary" id="btn-no" onclick="moveNoButton()">Non 🙈</button>
             </div>
         </div>
@@ -149,15 +159,18 @@
             <h1>Attends, t'as vraiment dit oui ?! 🤭</h1>
             <p style="font-size: 14px; color: #888; margin-top: -15px; margin-bottom: 20px;">(J'étais tellement stressé ! 😅)</p>
             <div class="btn-container">
-                <button onclick="nextStep(3)">D'accord d'accord ! ➔</button>
+                <button onclick="goToStep(3)">D'accord d'accord ! ➔</button>
             </div>
+            <button class="back-btn" onclick="goToStep(1)">⬅️ Retour</button>
         </div>
 
         <!-- ÉTAPE 3 : CHOIX DE LA DATE -->
         <div id="step-3" class="step hidden">
             <h1>De peur qu'on ne se confonde encore une fois, tu peux choisir la date ? ✨</h1>
             <input type="datetime-local" id="datetime-picker"><br>
-            <button onclick="goToReturnTime()">Fixer la date 🌸</button>
+            <button onclick="saveDateAndNext()">Fixer la date 🌸</button>
+            <br>
+            <button class="back-btn" onclick="goToStep(2)">⬅️ Retour</button>
         </div>
 
         <!-- ÉTAPE 3-BIS : HEURE DE RETOUR -->
@@ -165,7 +178,9 @@
             <h1>À quelle heure prévois-tu ton retour ? 🕰️</h1>
             <p style="font-size: 13px; color: #888; margin-bottom: 15px;">Pour que je sache quand te raccompagner en toute sécurité !</p>
             <input type="time" id="return-time-picker"><br>
-            <button onclick="goToDrinks()">Valider l'heure 🏡</button>
+            <button onclick="saveReturnTimeAndNext()">Valider l'heure 🏡</button>
+            <br>
+            <button class="back-btn" onclick="goToStep(3)">⬅️ Retour</button>
         </div>
 
         <!-- ÉTAPE DES BOISSONS -->
@@ -193,6 +208,7 @@
                     <span>Savanah 🍋</span>
                 </div>
             </div>
+            <button class="back-btn" onclick="goToStep('return')">⬅️ Retour</button>
         </div>
 
         <!-- ÉTAPE 4 : CHOIX DE LA NOURRITURE / ACTIVITÉ -->
@@ -228,6 +244,7 @@
                     <span>Glace 🍦</span>
                 </div>
             </div>
+            <button class="back-btn" onclick="goToStep('drinks')">⬅️ Retour</button>
         </div>
 
         <!-- ÉTAPE SPÉCIALE (PIQUE-NIQUE OU CINÉ PRIVÉE APRES LE 21/08/2026) -->
@@ -238,6 +255,8 @@
             </p>
             <input type="datetime-local" id="datetime-picker-special" min="2026-08-22T00:00"><br>
             <button onclick="validateSpecialDate()">Confirmer cette belle date 💕</button>
+            <br>
+            <button class="back-btn" onclick="goToStep(4)">⬅️ Retour</button>
         </div>
 
         <!-- ÉTAPE 5 (FIN) -->
@@ -251,12 +270,18 @@
     <script>
         let chosenData = { datetime: '', returnTime: '', drink: '', food: '' };
 
-        function nextStep(stepNumber) {
+        function goToStep(step) {
             document.querySelectorAll('.step').forEach(el => el.classList.add('hidden'));
-            document.getElementById(`step-${stepNumber}`).classList.remove('hidden');
+            if (step === 'return') {
+                document.getElementById('step-return').classList.remove('hidden');
+            } else if (step === 'drinks') {
+                document.getElementById('step-drinks').classList.remove('hidden');
+            } else {
+                document.getElementById(`step-${step}`).classList.remove('hidden');
+            }
         }
 
-        function goToReturnTime() {
+        function saveDateAndNext() {
             const dtInput = document.getElementById('datetime-picker').value;
             if (dtInput) {
                 const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' };
@@ -264,21 +289,18 @@
             } else {
                 chosenData.datetime = "bientôt";
             }
-            document.querySelectorAll('.step').forEach(el => el.classList.add('hidden'));
-            document.getElementById('step-return').classList.remove('hidden');
+            goToStep('return');
         }
 
-        function goToDrinks() {
+        function saveReturnTimeAndNext() {
             const rtInput = document.getElementById('return-time-picker').value;
             chosenData.returnTime = rtInput ? rtInput : "à préciser";
-            document.querySelectorAll('.step').forEach(el => el.classList.add('hidden'));
-            document.getElementById('step-drinks').classList.remove('hidden');
+            goToStep('drinks');
         }
 
         function selectDrink(drinkName) {
             chosenData.drink = drinkName;
-            document.querySelectorAll('.step').forEach(el => el.classList.add('hidden'));
-            document.getElementById('step-4').classList.remove('hidden');
+            goToStep(4);
         }
 
         function selectFood(foodName) {
