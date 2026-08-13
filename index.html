@@ -65,16 +65,19 @@
             box-shadow: none;
         }
 
-        input[type="datetime-local"] {
-            padding: 12px;
-            font-size: 15px;
-            border: 2px solid #ffb3c6;
+        /* Champ de date bien visible */
+        input[type="datetime-local"], input[type="time"] {
+            padding: 15px;
+            font-size: 16px;
+            border: 3px solid #ff4d6d;
             border-radius: 15px;
             margin-bottom: 20px;
-            width: 85%;
+            width: 90%;
             outline: none;
-            background-color: #fff0f3;
+            background-color: #ffffff;
             color: #d81b60;
+            font-weight: bold;
+            box-shadow: 0 4px 15px rgba(255, 77, 109, 0.2);
         }
 
         .hidden {
@@ -150,14 +153,49 @@
             </div>
         </div>
 
-        <!-- ÉTAPE 3 -->
+        <!-- ÉTAPE 3 : CHOIX DE LA DATE -->
         <div id="step-3" class="step hidden">
             <h1>De peur qu'on ne se confonde encore une fois, tu peux choisir la date ? ✨</h1>
             <input type="datetime-local" id="datetime-picker"><br>
-            <button onclick="nextStep(4)">Fixer la date 🌸</button>
+            <button onclick="nextStep(3-return)">Fixer la date 🌸</button>
         </div>
 
-        <!-- ÉTAPE 4 -->
+        <!-- ÉTAPE 3-BIS : HEURE DE RETOUR -->
+        <div id="step-return" class="step hidden">
+            <h1>À quelle heure prévois-tu ton retour ? 🕰️</h1>
+            <p style="font-size: 13px; color: #888; margin-bottom: 15px;">Pour que je sache quand te raccompagner en toute sécurité !</p>
+            <input type="time" id="return-time-picker"><br>
+            <button onclick="nextStep(4)">Valider l'heure 🏡</button>
+        </div>
+
+        <!-- ÉTAPE DES BOISSONS -->
+        <div id="step-drinks" class="step hidden">
+            <h1>Tu aimeras boire quoi pour te rafraîchir ? 🥤</h1>
+            <div class="food-grid">
+                <div class="food-card" onclick="selectDrink('Coca 🥤')">
+                    <img src="https://images.unsplash.com/photo-1622483767028-3f66f32aef97?w=200" alt="Coca">
+                    <span>Coca 🥤</span>
+                </div>
+                <div class="food-card" onclick="selectDrink('Fanta 🍊')">
+                    <img src="https://images.unsplash.com/photo-1625772299848-391b6a87d7b3?w=200" alt="Fanta">
+                    <span>Fanta 🍊</span>
+                </div>
+                <div class="food-card" onclick="selectDrink('Bavaria 🍺')">
+                    <img src="https://images.unsplash.com/photo-1608270104343-24192e212497?w=200" alt="Bavaria">
+                    <span>Bavaria 🍺</span>
+                </div>
+                <div class="food-card" onclick="selectDrink('Eau 💧')">
+                    <img src="https://images.unsplash.com/photo-1548839140-29a749e1cf4d?w=200" alt="Eau">
+                    <span>Eau 💧</span>
+                </div>
+                <div class="food-card" onclick="selectDrink('Savanah 🍋')">
+                    <img src="https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?w=200" alt="Savanah">
+                    <span>Savanah 🍋</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- ÉTAPE 4 : CHOIX DE LA NOURRITURE / ACTIVITÉ -->
         <div id="step-4" class="step hidden">
             <h1>De quoi as-tu envie ? 😋</h1>
             <div class="food-grid">
@@ -178,12 +216,12 @@
                     <span>Tacos 🌮</span>
                 </div>
                 <div class="food-card" onclick="selectFood('Pique-nique 🧺')">
-                    <img src="https://images.unsplash.com/photo-1526399258139-55f7e77d07e6?w=200" alt="Pique-nique">
+                    <img src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=200" alt="Pique-nique">
                     <span>Pique-nique 🧺</span>
                 </div>
-                <div class="food-card" onclick="selectFood('Ciné 🎬')">
-                    <img src="https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?w=200" alt="Ciné">
-                    <span>Ciné 🎬</span>
+                <div class="food-card" onclick="selectFood('Ciné privée 🎬')">
+                    <img src="https://images.unsplash.com/photo-1517604931442-7e0c8ed2963c?w=200" alt="Ciné privée">
+                    <span>Ciné privée 🎬</span>
                 </div>
                 <div class="food-card" onclick="selectFood('Glace 🍦')">
                     <img src="https://images.unsplash.com/photo-1560008511-11c63416e52d?w=200" alt="Glace">
@@ -192,11 +230,11 @@
             </div>
         </div>
 
-        <!-- ÉTAPE SPÉCIALE (PIQUE-NIQUE OU CINÉ APRES LE 21/08/2026) -->
+        <!-- ÉTAPE SPÉCIALE (PIQUE-NIQUE OU CINÉ PRIVÉE APRES LE 21/08/2026) -->
         <div id="step-special" class="step hidden">
             <h1>Oh, un choix parfait... 🌹</h1>
             <p style="font-size: 13px; color: #d81b60; line-height: 1.4; margin-bottom: 15px;">
-                Pour un moment aussi magique, ça demande un peu de préparation... Mon ange, choisis une nouvelle date, mais attention : il faudra que ce soit <strong>obligatoirement après le 21 août 2026</strong>, pour que tout soit parfait ! 🌙✨
+                Pour un moment aussi magique, ça demande un peu de préparation... Choisis une nouvelle date, mais attention : il faudra que ce soit <strong>obligatoirement après le 21 août 2026</strong>, pour que tout soit parfait ! 🌙✨
             </p>
             <input type="datetime-local" id="datetime-picker-special" min="2026-08-22T00:00"><br>
             <button onclick="validateSpecialDate()">Confirmer cette belle date 💕</button>
@@ -206,18 +244,17 @@
         <div id="step-5" class="step hidden">
             <h1>C'est noté ! 🎉</h1>
             <p id="confirmation-text" style="font-size: 14px; line-height: 1.4; color: #555; background: #fff0f3; padding: 10px; border-radius: 15px; border: 2px dashed #ffb3c6; margin-bottom: 12px;"></p>
-            <p style="font-size: 13px; font-weight: bold; color: #d81b60;">Envoie-moi une capture d'écran pour confirmer le rendez-vous, mon amour ! 📸✨</p>
+            <p style="font-size: 13px; font-weight: bold; color: #d81b60;">Envoie-moi une capture d'écran pour confirmer le rendez-vous, ma crush de l'église ! 📸✨</p>
         </div>
     </div>
 
     <script>
-        let chosenData = { datetime: '', food: '' };
+        let chosenData = { datetime: '', returnTime: '', drink: '', food: '' };
 
         function nextStep(stepNumber) {
             document.querySelectorAll('.step').forEach(el => el.classList.add('hidden'));
-            document.getElementById(`step-${stepNumber}`).classList.remove('hidden');
-
-            if (stepNumber === 4) {
+            
+            if (stepNumber === '3-return') {
                 const dtInput = document.getElementById('datetime-picker').value;
                 if (dtInput) {
                     const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' };
@@ -225,14 +262,26 @@
                 } else {
                     chosenData.datetime = "bientôt";
                 }
+                document.getElementById('step-return').classList.remove('hidden');
+            } else if (stepNumber === 4) {
+                const rtInput = document.getElementById('return-time-picker').value;
+                chosenData.returnTime = rtInput ? rtInput : "à préciser";
+                document.getElementById('step-drinks').classList.remove('hidden');
+            } else {
+                document.getElementById(`step-${stepNumber}`).classList.remove('hidden');
             }
+        }
+
+        function selectDrink(drinkName) {
+            chosenData.drink = drinkName;
+            document.querySelectorAll('.step').forEach(el => el.classList.add('hidden'));
+            document.getElementById('step-4').classList.remove('hidden');
         }
 
         function selectFood(foodName) {
             chosenData.food = foodName;
             
-            // Si elle choisit Pique-nique ou Ciné, on l'envoie sur l'étape spéciale après le 21/08/2026
-            if (foodName.includes('Pique-nique') || foodName.includes('Ciné')) {
+            if (foodName.includes('Pique-nique') || foodName.includes('Ciné privée')) {
                 document.querySelectorAll('.step').forEach(el => el.classList.add('hidden'));
                 document.getElementById('step-special').classList.remove('hidden');
             } else {
@@ -252,7 +301,7 @@
         }
 
         function finalizeOrder() {
-            const confText = `Rendez-vous pris pour le<br><strong>${chosenData.datetime}</strong> !<br><br>Au programme : <strong>${chosenData.food}</strong><br>J'ai trop hâte de te voir ! 🥰`;
+            const confText = `Rendez-vous pris pour le<br><strong>${chosenData.datetime}</strong><br>(Retour prévu vers <strong>${chosenData.returnTime}</strong>) !<br><br>Boisson : <strong>${chosenData.drink}</strong><br>Programme : <strong>${chosenData.food}</strong><br>J'ai trop hâte de te voir ! 🥰`;
             document.getElementById('confirmation-text').innerHTML = confText;
             
             document.querySelectorAll('.step').forEach(el => el.classList.add('hidden'));
