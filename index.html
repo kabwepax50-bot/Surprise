@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Invitation spéciale 🌸</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #ffe6f2, #ffccd5);
+            min-height: 100vh;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #4a4a4a;
+            overflow-x: hidden;
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 30px 20px;
+            border-radius: 25px;
+            box-shadow: 0 10px 30px rgba(255, 182, 193, 0.4);
+            text-align: center;
+            max-width: 380px;
+            width: 90%;
+            position: relative;
+            border: 3px solid #ffb3c6;
+        }
+
+        h1 {
+            font-size: 22px;
+            color: #d81b60;
+            margin-bottom: 25px;
+        }
+
+        .btn-container {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        button {
+            background-color: #ff4d6d;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            font-size: 16px;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: transform 0.2s, background-color 0.2s;
+            font-weight: bold;
+            box-shadow: 0 4px 10px rgba(255, 77, 109, 0.3);
+        }
+
+        button:active {
+            transform: scale(0.95);
+        }
+
+        button.secondary {
+            background-color: #f1f1f1;
+            color: #666;
+            box-shadow: none;
+        }
+
+        input[type="datetime-local"] {
+            padding: 12px;
+            font-size: 15px;
+            border: 2px solid #ffb3c6;
+            border-radius: 15px;
+            margin-bottom: 20px;
+            width: 85%;
+            outline: none;
+            background-color: #fff0f3;
+            color: #d81b60;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .food-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-bottom: 15px;
+        }
+
+        .food-card {
+            background-color: #fff0f3;
+            border: 2px solid #ffb3c6;
+            border-radius: 18px;
+            padding: 10px;
+            cursor: pointer;
+            transition: transform 0.2s, background-color 0.2s;
+            text-align: center;
+        }
+
+        .food-card:hover {
+            transform: scale(1.05);
+            background-color: #ffe0e6;
+        }
+
+        .food-card img {
+            width: 70px;
+            height: 70px;
+            object-fit: cover;
+            border-radius: 50%;
+            margin-bottom: 5px;
+            border: 2px solid #ff4d6d;
+        }
+
+        .food-card span {
+            display: block;
+            font-size: 14px;
+            font-weight: bold;
+            color: #d81b60;
+        }
+
+        .decor {
+            font-size: 20px;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="card">
+        <div class="decor">🌸 💖 🌸</div>
+
+        <!-- ÉTAPE 1 -->
+        <div id="step-1" class="step">
+            <h1>Mon ange, tu voudrais venir manger avec moi ? 🥺</h1>
+            <div class="btn-container">
+                <button onclick="nextStep(2)">Oui 💖</button>
+                <button class="secondary" id="btn-no" onclick="moveNoButton()">Non 🙈</button>
+            </div>
+        </div>
+
+        <!-- ÉTAPE 2 -->
+        <div id="step-2" class="step hidden">
+            <h1>Attends, t'as vraiment dit oui ?! 🤭</h1>
+            <p style="font-size: 14px; color: #888; margin-top: -15px; margin-bottom: 20px;">(J'étais tellement stressé ! 😅)</p>
+            <div class="btn-container">
+                <button onclick="nextStep(3)">D'accord d'accord ! ➔</button>
+            </div>
+        </div>
+
+        <!-- ÉTAPE 3 -->
+        <div id="step-3" class="step hidden">
+            <h1>De peur qu'on se confonde encore une fois, tu peux choisir la date ? ✨</h1>
+            <input type="datetime-local" id="datetime-picker"><br>
+            <button onclick="nextStep(4)">Fixer la date 🌸</button>
+        </div>
+
+        <!-- ÉTAPE 4 -->
+        <div id="step-4" class="step hidden">
+            <h1>De quoi as-tu envie ? 😋</h1>
+            <div class="food-grid">
+                <div class="food-card" onclick="selectFood('Pizza 🍕')">
+                    <img src="https://images.unsplash.com/photo-1513104890138-7c749659a591?w=200" alt="Pizza">
+                    <span>Pizza 🍕</span>
+                </div>
+                <div class="food-card" onclick="selectFood('Burger 🍔')">
+                    <img src="https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=200" alt="Burger">
+                    <span>Burger 🍔</span>
+                </div>
+                <div class="food-card" onclick="selectFood('Chawarma 🌯')">
+                    <img src="https://images.unsplash.com/photo-1626777552726-4a6b54c97e46?w=200" alt="Chawarma">
+                    <span>Chawarma 🌯</span>
+                </div>
+                <div class="food-card" onclick="selectFood('Glace 🍦')">
+                    <img src="https://images.unsplash.com/photo-1560008511-11c63416e52d?w=200" alt="Glace">
+                    <span>Glace 🍦</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- ÉTAPE 5 -->
+        <div id="step-5" class="step hidden">
+            <h1>C'est noté ! 🎉</h1>
+            <p id="confirmation-text" style="font-size: 16px; line-height: 1.6; color: #555; background: #fff0f3; padding: 15px; border-radius: 15px; border: 2px dashed #ffb3c6;"></p>
+        </div>
+    </div>
+
+    <script>
+        let chosenData = { datetime: '', food: '' };
+
+        function nextStep(stepNumber) {
+            document.querySelectorAll('.step').forEach(el => el.classList.add('hidden'));
+            document.getElementById(`step-${stepNumber}`).classList.remove('hidden');
+
+            if (stepNumber === 4) {
+                const dtInput = document.getElementById('datetime-picker').value;
+                if (dtInput) {
+                    const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' };
+                    chosenData.datetime = new Date(dtInput).toLocaleDateString('fr-FR', options);
+                } else {
+                    chosenData.datetime = "bientôt";
+                }
+            }
+        }
+
+        function selectFood(foodName) {
+            chosenData.food = foodName;
+            const confText = `Rendez-vous pris pour le<br><strong>${chosenData.datetime}</strong> !<br><br>Au programme : <strong>${chosenData.food}</strong><br>J'ai trop hâte de te voir ! 🥰`;
+            document.getElementById('confirmation-text').innerHTML = confText;
+            nextStep(5);
+        }
+
+        function moveNoButton() {
+            const btnNo = document.getElementById('btn-no');
+            const x = (Math.random() - 0.5) * 160;
+            const y = (Math.random() - 0.5) * 100;
+            btnNo.style.transform = `translate(${x}px, ${y}px)`;
+        }
+    </script>
+</body>
+</html>
