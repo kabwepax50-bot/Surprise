@@ -19,20 +19,20 @@
 
         .card {
             background: rgba(255, 255, 255, 0.95);
-            padding: 30px 20px;
+            padding: 25px 15px;
             border-radius: 25px;
             box-shadow: 0 10px 30px rgba(255, 182, 193, 0.4);
             text-align: center;
-            max-width: 380px;
+            max-width: 400px;
             width: 90%;
             position: relative;
             border: 3px solid #ffb3c6;
         }
 
         h1 {
-            font-size: 22px;
+            font-size: 20px;
             color: #d81b60;
-            margin-bottom: 25px;
+            margin-bottom: 20px;
         }
 
         .btn-container {
@@ -84,15 +84,17 @@
         .food-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 12px;
-            margin-bottom: 15px;
+            gap: 10px;
+            margin-bottom: 10px;
+            max-height: 280px;
+            overflow-y: auto;
         }
 
         .food-card {
             background-color: #fff0f3;
             border: 2px solid #ffb3c6;
             border-radius: 18px;
-            padding: 10px;
+            padding: 8px;
             cursor: pointer;
             transition: transform 0.2s, background-color 0.2s;
             text-align: center;
@@ -104,17 +106,17 @@
         }
 
         .food-card img {
-            width: 70px;
-            height: 70px;
+            width: 55px;
+            height: 55px;
             object-fit: cover;
             border-radius: 50%;
-            margin-bottom: 5px;
+            margin-bottom: 4px;
             border: 2px solid #ff4d6d;
         }
 
         .food-card span {
             display: block;
-            font-size: 14px;
+            font-size: 13px;
             font-weight: bold;
             color: #d81b60;
         }
@@ -150,7 +152,7 @@
 
         <!-- ÉTAPE 3 -->
         <div id="step-3" class="step hidden">
-            <h1>De peur qu'on se confonde encore une fois, tu peux choisir la date ? ✨</h1>
+            <h1>De peur qu'on ne se confonde encore une fois, tu peux choisir la date ? ✨</h1>
             <input type="datetime-local" id="datetime-picker"><br>
             <button onclick="nextStep(4)">Fixer la date 🌸</button>
         </div>
@@ -171,6 +173,18 @@
                     <img src="https://images.unsplash.com/photo-1626777552726-4a6b54c97e46?w=200" alt="Chawarma">
                     <span>Chawarma 🌯</span>
                 </div>
+                <div class="food-card" onclick="selectFood('Tacos 🌮')">
+                    <img src="https://images.unsplash.com/photo-1565299585323-38d6b0865b47?w=200" alt="Tacos">
+                    <span>Tacos 🌮</span>
+                </div>
+                <div class="food-card" onclick="selectFood('Pique-nique 🧺')">
+                    <img src="https://images.unsplash.com/photo-1526399258139-55f7e77d07e6?w=200" alt="Pique-nique">
+                    <span>Pique-nique 🧺</span>
+                </div>
+                <div class="food-card" onclick="selectFood('Ciné 🎬')">
+                    <img src="https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?w=200" alt="Ciné">
+                    <span>Ciné 🎬</span>
+                </div>
                 <div class="food-card" onclick="selectFood('Glace 🍦')">
                     <img src="https://images.unsplash.com/photo-1560008511-11c63416e52d?w=200" alt="Glace">
                     <span>Glace 🍦</span>
@@ -178,10 +192,21 @@
             </div>
         </div>
 
-        <!-- ÉTAPE 5 -->
+        <!-- ÉTAPE SPÉCIALE (PIQUE-NIQUE OU CINÉ APRES LE 21/08/2026) -->
+        <div id="step-special" class="step hidden">
+            <h1>Oh, un choix parfait... 🌹</h1>
+            <p style="font-size: 13px; color: #d81b60; line-height: 1.4; margin-bottom: 15px;">
+                Pour un moment aussi magique, ça demande un peu de préparation... Mon ange, choisis une nouvelle date, mais attention : il faudra que ce soit <strong>obligatoirement après le 21 août 2026</strong>, pour que tout soit parfait ! 🌙✨
+            </p>
+            <input type="datetime-local" id="datetime-picker-special" min="2026-08-22T00:00"><br>
+            <button onclick="validateSpecialDate()">Confirmer cette belle date 💕</button>
+        </div>
+
+        <!-- ÉTAPE 5 (FIN) -->
         <div id="step-5" class="step hidden">
             <h1>C'est noté ! 🎉</h1>
-            <p id="confirmation-text" style="font-size: 16px; line-height: 1.6; color: #555; background: #fff0f3; padding: 15px; border-radius: 15px; border: 2px dashed #ffb3c6;"></p>
+            <p id="confirmation-text" style="font-size: 14px; line-height: 1.4; color: #555; background: #fff0f3; padding: 10px; border-radius: 15px; border: 2px dashed #ffb3c6; margin-bottom: 12px;"></p>
+            <p style="font-size: 13px; font-weight: bold; color: #d81b60;">Envoie-moi une capture d'écran pour confirmer le rendez-vous, mon amour ! 📸✨</p>
         </div>
     </div>
 
@@ -205,9 +230,33 @@
 
         function selectFood(foodName) {
             chosenData.food = foodName;
+            
+            // Si elle choisit Pique-nique ou Ciné, on l'envoie sur l'étape spéciale après le 21/08/2026
+            if (foodName.includes('Pique-nique') || foodName.includes('Ciné')) {
+                document.querySelectorAll('.step').forEach(el => el.classList.add('hidden'));
+                document.getElementById('step-special').classList.remove('hidden');
+            } else {
+                finalizeOrder();
+            }
+        }
+
+        function validateSpecialDate() {
+            const dtInput = document.getElementById('datetime-picker-special').value;
+            if (dtInput) {
+                const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' };
+                chosenData.datetime = new Date(dtInput).toLocaleDateString('fr-FR', options);
+            } else {
+                chosenData.datetime = "après le 21 août 2026";
+            }
+            finalizeOrder();
+        }
+
+        function finalizeOrder() {
             const confText = `Rendez-vous pris pour le<br><strong>${chosenData.datetime}</strong> !<br><br>Au programme : <strong>${chosenData.food}</strong><br>J'ai trop hâte de te voir ! 🥰`;
             document.getElementById('confirmation-text').innerHTML = confText;
-            nextStep(5);
+            
+            document.querySelectorAll('.step').forEach(el => el.classList.add('hidden'));
+            document.getElementById('step-5').classList.remove('hidden');
         }
 
         function moveNoButton() {
